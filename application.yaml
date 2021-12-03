@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: https://dargentieri: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@github.com/dargentieri/test_argocd.git
     targetRevision: HEAD
-    path: dev
+    path: environments/dev
   destination:
     server: https://kubernetes.default.svc
     namespace: myapp
