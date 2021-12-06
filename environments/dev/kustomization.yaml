@@ -10,3 +10,6 @@ configMapGenerator:
   - configs/config.json
 patchesStrategicMerge:
     - env.yaml
+images:
+- name: nginx
+  newTag: 1.20
