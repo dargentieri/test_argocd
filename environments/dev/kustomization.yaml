@@ -8,3 +8,5 @@ configMapGenerator:
   behavior: merge
   files:
   - configs/config.json
+patchesStrategicMerge:
+    - env.yaml
