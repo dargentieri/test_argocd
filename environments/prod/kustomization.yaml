@@ -3,8 +3,7 @@ bases:
 patches:
     - replicacount.yaml
 configMapGenerator:
-- name:example-config
-  namespace: myapp
-  beahavior: replace
+- name: example-config
+  behavior: merge
   files:
-    - configs/config.json
+  - configs/config.json
