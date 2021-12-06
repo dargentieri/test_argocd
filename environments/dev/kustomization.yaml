@@ -2,3 +2,9 @@ bases:
     - ../../base
 patches:
     - replicacount.yaml
+configMapGenerator:
+- name:example-config
+  namespace: myapp
+  beahavior: replace
+  files:
+    - configs/config.json
