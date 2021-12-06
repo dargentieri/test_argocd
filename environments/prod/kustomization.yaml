@@ -4,6 +4,7 @@ patches:
     - replicacount.yaml
 configMapGenerator:
 - name: example-config
+  namespace: myapp
   behavior: merge
   files:
   - configs/config.json
