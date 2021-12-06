@@ -12,4 +12,4 @@ patchesStrategicMerge:
     - env.yaml
 images:
 - name: nginx
-  newTag: 1.201
+  newTag: latest
