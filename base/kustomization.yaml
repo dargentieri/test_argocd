@@ -1,2 +1,3 @@
 resources:
     - dnginx.yaml
+    - configmap.yaml
