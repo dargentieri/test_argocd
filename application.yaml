@@ -7,7 +7,7 @@ spec:
   project: default
 
   source:
-    repoURL: https://dargentieri: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@github.com/dargentieri/test_argocd.git
+    repoURL: https://github.com/dargentieri/test_argocd.git
     targetRevision: HEAD
     path: environments/dev
   destination:
@@ -21,3 +21,4 @@ spec:
     automated:
       selfHeal: true
       prune: true
+     
