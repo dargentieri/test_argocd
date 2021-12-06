@@ -5,11 +5,11 @@ patches:
 configMapGenerator:
 - name: example-config
   namespace: myapp
-  behavior: merge
+  #behavior: merge
   files:
   - configs/config.json
 patchesStrategicMerge:
     - env.yaml
 images:
 - name: nginx
-  newTag: latest
+  newTag: stable
