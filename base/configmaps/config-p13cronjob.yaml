@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: config-p13cronjob
+    namespace: myapp
+data:
+    QUERYR: select * from tranche_s
+    TABLEW: tranche_s_target
+    NUMTHREADS: '2'
+    TRUNCATETARGETTABLE: 'false'
+    TRUNCATEFUNCTION: ''
+    LOG_LEVEL: INFO
+    INTERVALROWS: '500000'
