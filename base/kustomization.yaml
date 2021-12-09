@@ -4,3 +4,4 @@ resources:
     - deployments/dnginx.yaml
     - cronjobs/p13cronjob.yaml
     - configmaps/config.yaml
+    - configmaps/config-p13cronjob.yaml
