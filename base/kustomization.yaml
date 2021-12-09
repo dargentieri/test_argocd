@@ -1,3 +1,5 @@
 resources:
-    - dnginx.yaml
-    - configmap.yaml
+    - services/mysql.yaml
+    - deployments/mysql.yaml
+    - deployments/dnginx.yaml
+    - configmaps/config.yaml
