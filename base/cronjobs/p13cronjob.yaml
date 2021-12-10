@@ -3,8 +3,10 @@ apiVersion: batch/v1beta1
 metadata:
   name: p13
 spec:
-  schedule: '*/3 * * * *'
-  concurrencyPolicy: Allow
+  schedule: '*/15 * * * *'
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
   suspend: false
   jobTemplate:
     metadata:
@@ -97,8 +99,5 @@ spec:
                   cpu: 100m
                   memory: 256Mi
               imagePullPolicy: Always
-              
-  successfulJobsHistoryLimit: 1
-  failedJobsHistoryLimit: 1
 status:
   lastScheduleTime: '2020-12-21T13:11:00Z'

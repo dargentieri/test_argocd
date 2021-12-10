@@ -5,7 +5,6 @@ patches:
 configMapGenerator:
 - name: example-config
   namespace: myapp
-  #behavior: merge
   files:
   - configs/config.json
 patchesStrategicMerge:
