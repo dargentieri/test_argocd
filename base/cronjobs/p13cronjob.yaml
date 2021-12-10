@@ -99,5 +99,3 @@ spec:
                   cpu: 100m
                   memory: 256Mi
               imagePullPolicy: Always
-status:
-  lastScheduleTime: '2020-12-21T13:11:00Z'
