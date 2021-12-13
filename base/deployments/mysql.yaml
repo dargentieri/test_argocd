@@ -16,6 +16,8 @@ spec:
       containers:
       - image: mysql:5.7.24
         name: mysql
+        args:
+        - "mysqld --upgrade=FORCE"
         env:
           # Use secret in real usage
         - name: MYSQL_ROOT_PASSWORD
