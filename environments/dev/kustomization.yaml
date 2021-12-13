@@ -13,7 +13,7 @@ configMapGenerator:
   files:
   - globalconfigmaps/config.json
 patchesStrategicMerge:
-    - deployments/mysql/variables.yaml
+    #- deployments/mysql/variables.yaml
     - deployments/ngnix/variables.yaml
     - deployments/webserver/variables.yaml
 images:
