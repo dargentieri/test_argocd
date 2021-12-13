@@ -1,14 +1,24 @@
 bases:
     - ../../base
 patches:
-    - replicacount.yaml
+    - deployments/mysql/replicas.yaml
+    - deployments/mysql/resources.yaml
+    - deployments/ngnix/replicas.yaml
+    - deployments/ngnix/resources.yaml
 configMapGenerator:
 - name: example-config
   namespace: myapp
   files:
-  - configs/config.json
+  - globalconfigmaps/config.json
 patchesStrategicMerge:
-    - env.yaml
+    - deployments/mysql/variables.yaml
+    - deployments/ngnix/variables.yaml
 images:
 - name: nginx
+  newTag: latest
+- name: mysql
+  newTag: latest
+- name: testphp
+  newTag: latest
+- name: p13
   newTag: latest

@@ -1,7 +1,9 @@
 resources:
     - services/mysql.yaml
+    - services/webserver.yaml
     - deployments/mysql.yaml
     - deployments/dnginx.yaml
+    - deployments/webserver.yaml
     - cronjobs/p13cronjob.yaml
     - configmaps/config.yaml
     - configmaps/config-p13cronjob.yaml
