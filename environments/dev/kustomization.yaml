@@ -19,8 +19,6 @@ patchesStrategicMerge:
 images:
 - name: nginx
   newTag: latest
-- name: mysql
-  newTag: latest
 - name: testphp
   newTag: latest
 - name: p13
