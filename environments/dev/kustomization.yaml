@@ -4,7 +4,7 @@ patches:
     - deployments/mysql/replicas.yaml
     - deployments/mysql/resources.yaml
     - deployments/ngnix/replicas.yaml
-    - deployments/ngnix/resources.yaml
+    #- deployments/ngnix/resources.yaml
     - cronjobs/p13cronjob/resources.yaml
     - cronjobs/p13cronjob/scheduling.yaml
 configMapGenerator:

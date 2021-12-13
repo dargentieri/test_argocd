@@ -158,6 +158,14 @@ Per la gestione di differenti ambienti:
 <!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _italic_' -->
 #
 ![bg](default/template.svg)
-- 
+La folder di **base** è suddivisa nella seguente maniera:
+  - kustomizaziont.yaml
+  - services
+  - cronjobs
+  - deployments
+  - configmaps
 
-
+Ogni sottofolder della folder di **base**, contiene al suo interno gli yaml di riferimento per ogni applicativo. Ad esempio per __deployments__ avremo:
+  * mysql.yaml
+  * webserver.yaml
+  * dnginx.yaml
