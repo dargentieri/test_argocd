@@ -19,8 +19,9 @@ spec:
         args:
         - "--ignore-db-dir=lost+found"
         env:
+          # Use secret in real usage
         - name: MYSQL_ROOT_PASSWORD
-          value: 123Stella
+          value: "123Stella"
         ports:
         - containerPort: 3307
           name: mysql
