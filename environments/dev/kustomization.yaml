@@ -5,6 +5,8 @@ patches:
     - deployments/mysql/resources.yaml
     - deployments/ngnix/replicas.yaml
     - deployments/ngnix/resources.yaml
+    - cronjobs/p13cronjob/resources.yaml
+    - cronjobs/p13cronjob/scheduling.yaml
 configMapGenerator:
 - name: example-config
   namespace: myapp
@@ -13,6 +15,7 @@ configMapGenerator:
 patchesStrategicMerge:
     - deployments/mysql/variables.yaml
     - deployments/ngnix/variables.yaml
+    - deployments/webserver/variables.yaml
 images:
 - name: nginx
   newTag: latest
