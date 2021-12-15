@@ -53,7 +53,7 @@ Argo CD è un **continuous delivery tool**, che triggera i cambiamenti effettuat
 <!-- header: '**FLUSSO OPERATIVO**  $\color{#ffba3a}{|}$  _Argo CD_' -->
 # 
 ![bg](3.svg)
-*Nota bene: Le configurazioni, sulla repository remota, sono aggiornate manualmente (DevOps team) o attraverso uno specifico automatismo (Pipeline).* 
+Le configurazioni, sulla repository remota, sono aggiornate manualmente (DevOps team) o attraverso uno specifico automatismo (ad esempio Pipeline).
 
 
 ---
@@ -80,7 +80,7 @@ spec:
     server: https://kubernetes.default.svc
     namespace: myapp
 ```
-*Nota bene: Argo CD per il suo primo avvio richiede un primo **apply** dell'application.yaml*.
+*Nota bene: Argo CD per il suo primo avvio richiede un **apply** dell'application.yaml*.
 
 ---
 <!-- SLIDE4 -->
@@ -158,21 +158,21 @@ Kustomize è uno strumento, integrato in kubectl, che consente di personalizzare
 ![bg](default/template.svg)
 Argo CD presenta un path di configurazione per ogni ambiente, le cui specifiche sono delineate a partire dal kustomization.yaml.
 
-Il kustomization.yaml afferisce a delle configurazioni di base a cui viene applicato un override.
+Il kustomization.yaml afferisce a delle configurazioni di base a cui viene applicato un override, così da personalizzare le configurazioni per lo specifico ambiente.
 
 ---
 <!-- SLIDE12 -->
 <!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Root_' -->
 #
 ![bg](default/template.svg)
-La repository è suddivisa nella seguente maniera:
-  - ***application.yaml*** → configurazioni di lancio
-  - **base** → template generale per gli applicativi presenti sul cluster
-  - **environments** → configurazioni per i diversi ambienti
-  - **init** → configurazioni di setup environment per il cluster
+La repository è suddivisa in:
+  - ***application.yaml*** → configurazioni di lancio;
+  - **base** → template generale per gli applicativi presenti sul cluster;
+  - **environments** → configurazioni per i diversi ambienti;
+  - **init** → configurazioni di setup environment per il cluster.
 
 Per quanto riguarda le folder di base e dell'environments, è possibile definire due scenari alternativi:
-- **Scenario 1** : Suddivisione logica basata sulle diverse tipologie di risorse kubernetes (cronjobs,services, deployments, ecc).
+- **Scenario 1** : Suddivisione logica basata sulle diverse tipologie di risorse kubernetes (cronjobs,services, deployments, ecc);
 - **Scenario 2** : Suddivisione logica basata sugli applicativi presenti all'interno del cluster K8s.
 
 ---
@@ -205,7 +205,8 @@ La folder di **environments** è suddivisa nella seguente maniera:
 
 Ogni sottofolder fa riferimento ad un ambiente specifico.
 
-*Nota bene: Le folder di environments rappresentano il path da assegnare ad Argo CD al momento della configurazione del cluster.*
+*Nota bene: Le folder di environments rappresentano il path da assegnare ad Argo CD al momento della configurazione del cluster. 
+Ad esempio, path = environments/sviluppo.*
 
 ---
 <!-- SLIDE15 -->
@@ -213,7 +214,7 @@ Ogni sottofolder fa riferimento ad un ambiente specifico.
 #
 ![bg](default/template.svg)
 Ogni **environment** presenta le seguenti configurazioni:
-  - ***kustomization.yaml*** → Contiene un riferimento alla kustomization di base, alle patches , alle configmaps specifiche dell'ambiente, alle environment variables, alle immagini (permette di eseguire con facilità un rolling update).
+  - ***kustomization.yaml*** → Contiene un riferimento alla kustomization di base, alle patches , alle configmaps specifiche dell'ambiente, alle environment variables, alle immagini dei containers (questo permette di eseguire con facilità un rolling update).
   - cronjobs
   - services
   - deployments
@@ -227,35 +228,19 @@ Le risorse contengono internamente una folder per ogni applicazione e/o servizio
 <!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Scenario 1_' -->
 #
 ![bg](default/template.svg)
-Ad esempio per i deployment avremo:
-  - mysql
+Ad esempio per i deployments avremo:
+  - oracle
   - webserver
   - cassa
   - ...
 
-All'interno di ogni folder ci sono i riferimenti a delle specifiche tipiche di ogni tipologia di risorsa, ad esempio per deployments:
-  - ***replicas.yaml*** → numero di istanze
-  - ***resources.yaml*** → risorse assegnate ad ogni pod
-  - ***variables.yaml*** → variabili d'ambiente utilizzate dai singoli pod
+All'interno di ogni folder ci sono i riferimenti a delle specifiche relative ad ogni tipologia di risorsa, ad esempio per la risorsa deployments:
+  - ***replicas.yaml*** → numero di istanze;
+  - ***resources.yaml*** → risorse assegnate ad ogni pod;
+  - ***variables.yaml*** → variabili d'ambiente utilizzate dai singoli pod.
 
 ---
 <!-- SLIDE17 -->
-<!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Scenario 1_' -->
-#
-![bg](default/template.svg)
-Ad esempio per i deployment:
-  - mysql
-  - webserver
-  - cassa
-  - ...
-
-All'interno di ogni folder sono presenti dei file yaml legati a degli attributi tipici della tipologia di risorsa:
-  - ***replicas.yaml*** → numero di istanze
-  - ***resources.yaml*** → risorse assegnate ad ogni pod
-  - ***variables.yaml*** → variabili d'ambiente utilizzate dai singoli pod
-
----
-<!-- SLIDE18 -->
 <!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Scenario 1_' -->
 #
 ![bg](default/template.svg)
@@ -279,14 +264,14 @@ patchesStrategicMerge:
     - ...
     - deployments/webserver/variables.yaml
 images:
-- name: nginx
-  newTag: latest
+- name: webserver
+  newTag: 1.0.1
 - ...
 - name: p13
-  newTag: latest
+  newTag: master-latest
 ```
 ---
-<!-- SLIDE19 -->
+<!-- SLIDE18 -->
 <!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Scenario 2_' -->
 #
 ![bg](default/template.svg)
@@ -298,19 +283,19 @@ La folder di **base** presenta al suo interno:
   - ...
   - globalconfigmaps
 
-Ogni sottofolder rappresenta un riferimento ad ogni applicazione presente sul cluster, quest'ultima contiene al suo interno la tipologia di risorsa K8s ad essa associata.
+Ogni sottofolder rappresenta un riferimento ad una applicazione presente sul cluster, quest'ultime contengono a loro volta ogni tipologia di risorsa K8s ad esse associate.
 
 ---
-<!-- SLIDE20 -->
+<!-- SLIDE19 -->
 <!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Scenario 2_' -->
 #
 ![bg](default/template.svg)
 Ogni **environment** presenta le seguenti configurazioni:
-  - ***kustomization.yaml*** → Contiene un riferimento alla kustomization di base, alle patches , alle configmaps specifiche dell'ambiente, alle environment variables, alle immagini su cui è possibile poter fare in ogni momento un rolling update.
+  - ***kustomization.yaml*** → Contiene un riferimento alla kustomization di base, alle patches , alle configmaps specifiche dell'ambiente, alle environment variables, alle immagini dei containers (questo permette di eseguire con facilità un rolling update).
   - cassa
   - oracle
   - p13
   - ...
   - globalconfigmaps
 
-Le folder delle app contengono a loro volta altre folder relative ad ogni tipologia di risorsa associata al cluster per quella specifica app.
+Le folder delle app contengono a loro volta dei file yaml relativi ad ogni tipologia di risorsa associata al cluster per quella specifica app.
