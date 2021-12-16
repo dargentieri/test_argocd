@@ -153,7 +153,7 @@ Kustomize è uno strumento, integrato in kubectl, che consente di personalizzare
 
 ---
 <!-- SLIDE11 -->
-<!-- header: '**CONFIGURAZIONI PER AMBIENTE**  $\color{#ffba3a}{|}$  _Argo CD + Kustomize_' -->
+<!-- header: '**CONFIGURAZIONI AMBIENTE**  $\color{#ffba3a}{|}$  _Argo CD + Kustomize_' -->
 # 
 ![bg](default/template.svg)
 Argo CD presenta un path di configurazione per ogni ambiente, le cui specifiche sono delineate a partire dal kustomization.yaml.
@@ -162,6 +162,13 @@ Il kustomization.yaml afferisce a delle configurazioni di base a cui viene appli
 
 ---
 <!-- SLIDE12 -->
+<!-- header: '**INFRASTRUTTURA**  $\color{#ffba3a}{|}$  _Argo CD + Kustomize_' -->
+# 
+![bg](12.svg)
+
+
+---
+<!-- SLIDE13 -->
 <!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Root_' -->
 #
 ![bg](default/template.svg)
@@ -176,7 +183,7 @@ Per quanto riguarda le folder di base e dell'environments, è possibile definire
 - **Scenario 2** : Suddivisione logica basata sugli applicativi presenti all'interno del cluster K8s.
 
 ---
-<!-- SLIDE13 -->
+<!-- SLIDE14 -->
 <!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Scenario 1_' -->
 #
 ![bg](default/template.svg)
@@ -193,7 +200,7 @@ Ogni sottofolder, contiene gli yaml di configurazione. Ad esempio:
   - *cassa.yaml*
 
 ---
-<!-- SLIDE14 -->
+<!-- SLIDE15 -->
 <!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Scenario 1_' -->
 #
 ![bg](default/template.svg)
@@ -209,7 +216,7 @@ Ogni sottofolder fa riferimento ad un ambiente specifico.
 Ad esempio, path = environments/sviluppo.*
 
 ---
-<!-- SLIDE15 -->
+<!-- SLIDE16 -->
 <!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Scenario 1_' -->
 #
 ![bg](default/template.svg)
@@ -224,7 +231,7 @@ Ogni **environment** presenta le seguenti configurazioni:
 Le risorse contengono internamente una folder per ogni applicazione e/o servizio presente sul cluster.
 
 ---
-<!-- SLIDE16 -->
+<!-- SLIDE17 -->
 <!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Scenario 1_' -->
 #
 ![bg](default/template.svg)
@@ -240,7 +247,7 @@ All'interno di ogni folder ci sono i riferimenti a delle specifiche relative ad 
   - ***variables.yaml*** → variabili d'ambiente utilizzate dai singoli pod.
 
 ---
-<!-- SLIDE17 -->
+<!-- SLIDE18 -->
 <!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Scenario 1_' -->
 #
 ![bg](default/template.svg)
@@ -271,7 +278,7 @@ images:
   newTag: master-latest
 ```
 ---
-<!-- SLIDE18 -->
+<!-- SLIDE19 -->
 <!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Scenario 2_' -->
 #
 ![bg](default/template.svg)
@@ -286,7 +293,7 @@ La folder di **base** presenta al suo interno:
 Ogni sottofolder rappresenta un riferimento ad una applicazione presente sul cluster, quest'ultime contengono a loro volta ogni tipologia di risorsa K8s ad esse associate.
 
 ---
-<!-- SLIDE19 -->
+<!-- SLIDE20 -->
 <!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Scenario 2_' -->
 #
 ![bg](default/template.svg)
