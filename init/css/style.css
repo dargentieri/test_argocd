@@ -1,0 +1,51 @@
+	body{
+	  background-color: rgb(230, 230, 233);
+	  font-family: 'Lato', sans-serif;
+	}
+	.project{
+	  display:block;
+	  color: inherit; /* blue colors for links too */
+	  text-decoration: inherit; /* no underline */
+	  margin:5px;
+	  cursor:pointer;
+	  border:1px solid transparent;
+	  border-radius:10px;
+	  background-color:white;
+	  height:90px;
+	  width:400px;
+	  overflow:hidden;
+	  position:relative;
+	}
+	.project .label{
+	  font-size:20px;
+	  min-width:100px;
+	  line-height:90px;
+	  text-align:center;
+	  color:#505050;
+	}
+	.status{
+	  position:absolute;
+	  left:-80px;
+	  color:white;
+	  width:100px;
+	  height:90px;
+	  text-align:center;
+	  line-height:90px;
+	  font-size:15px;
+	  
+	}
+	.statusLabel{
+	  opacity:0;
+	}
+	.blue{
+	  background-color:#4ea0b8;
+	}
+	.yellow{
+	  background-color:#FFB468;
+	}
+	.green{
+	  background-color:#59D959;
+	}
+	.red{
+	  background-color:#FF6868;
+	}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>  
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Controller</title>
+		<link rel="stylesheet" type ="text/css" href="css/style.css"/>
+		<script language="javascript">
+		(function () {
+		  var appSize = { width: 450, height: 450 }
+		  window.resizeTo(appSize.width, appSize.height)
+		  window.moveTo((screen.width - appSize.width) / 2, (screen.availHeight - appSize.height) / 2)
+		})()
+		</script>
+		<script src="js/main.js"></script>
+		<link id=shortcutlink rel="shortcut icon" href="favicon.ico">
+		<HTA:Application 
+			ApplicationName="Controller deployments"
+			ID="controller"
+			Scroll="yes"
+			Selection="yes"
+			Border="thin"
+			BorderStyle = "normal"
+			MaximizeButton = "yes"
+			MinimizeButton = "yes"
+			ShowInTaskBar = "yes"
+			SingleInstance = "yes"
+			SysMenu = "yes"
+			WindowState = "maximize"
+			Caption = "yes"
+			Icon="favicon.ico"
+			Version="1.0"
+			InnerBorder="no" 
+			ContextMenu="no"
+		/>
+	</head>
+
+	<body translate="no">
+		<a target="_blank" onclick="javascript:apri(0)" class="project">
+		  <div id="scelta0" class="status red"></div>
+		  <div class="label">Setup environment</div>
+		</a>
+		<a target="_blank" onclick="javascript:apri(1)" class="project">
+		  <div id="scelta1" class="status red"></div>
+		  <div class="label">Start port-forward</div>
+		</a>
+	</body>
+</html>
