@@ -25,7 +25,7 @@ style: |
   p{font-size:0.7em; font-family:calibri; text-align:justify;}
   footer {margin:0; padding:0; height:5%;}
   header {color:#005366; padding:30px; margin-left:30px; font-size:0.8em;}
-  pre {font-size: 0.6em;}
+  pre {font-size: 0.6em; border: none;}
   ul li {font-size:0.7em; font-family:calibri; text-align:justify;}
 </style>
 <!--END style -->
@@ -43,10 +43,11 @@ style: |
 <!-- header: '**DESCRIZIONE**  $\color{#ffba3a}{|}$  _Argo CD_' -->
 #
 ![bg](default/template.svg)
-Argo CD è un **continuous delivery tool**, che triggera i cambiamenti effettuati su una repository remota (la repository rappresenta l'unica fonte di verità per le configurazioni degli applicativi sul cluster).
+Argo CD è un **continuous delivery tool**, che recepisce tutti i cambiamenti effettuati sulle configurazioni presenti su una repository remota (la repository rappresenta l'unica fonte di verità per le configurazioni degli applicativi che operano sul cluster kubernetes).
 
 **Caratteristiche** 
-- Il tool monitora i cambiamenti su K8s e ne preserva il suo stato di salute.
+- Il tool monitora i cambiamenti su K8s e ne preserva lo stato di salute.
+- Consente una facile integrazione di plugin per la gestione delle notifiche ([Argo CD Notification](https://argocd-notifications.readthedocs.io/en/stable/)) e dei secret ([Argo CD Vault](https://github.com/argoproj-labs/argocd-vault-plugin)).
 
 ---
 <!-- SLIDE2 -->
@@ -55,35 +56,39 @@ Argo CD è un **continuous delivery tool**, che triggera i cambiamenti effettuat
 ![bg](3.svg)
 Le configurazioni, sulla repository remota, sono aggiornate manualmente (DevOps team) o attraverso uno specifico automatismo (ad esempio Pipeline).
 
-
 ---
 <!-- SLIDE3 -->
 <!-- header: '**INSTALLAZIONE**  $\color{#ffba3a}{|}$  _Argo CD_' -->
 # 
 ![bg](default/template.svg)
-L'initialization parte dalla definizione di un **application.yaml**
-
-```
-apiVersion: argoproj.io/v1alpha1
-kind: Application
+L'initialization parte dalla definizione di **argocd.yaml** i cui elementi caratterizzanti sono:
+- **namespace** → namespace su cui Argo CD è installato.
+```yaml
 metadata:
   name: myapp-argo-application
   namespace: argocd
-spec:
-  project: default
-
+```
+**source** → repository GitHub, con puntamento al commit e al relativo path dell'ambiente.
+```yaml
   source:
     repoURL: https://github.com/dargentieri/test_argocd.git
     targetRevision: HEAD
     path: environments/dev
+```
+---
+<!-- SLIDE4 -->
+<!-- header: '**INSTALLAZIONE**  $\color{#ffba3a}{|}$  _Argo CD_' -->
+#
+# 
+![bg](default/template.svg)
+- **destination** → cluster K8s e namespace su cui Argo CD effettua operazioni di aggiornamento/monitoraggio sulle configurazioni degli applicativi presenti sul cluster.
+```yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: myapp
 ```
-*Nota bene: Argo CD per il suo primo avvio richiede un **apply** dell'application.yaml*.
-
 ---
-<!-- SLIDE4 -->
+<!-- SLIDE5 -->
 <!-- header: '**POOLING**  $\color{#ffba3a}{|}$  _Argo CD e GitHub_' -->
 # 
 ![bg](default/template.svg)
@@ -93,7 +98,7 @@ L'aggiornamento delle configurazioni presenti su K8S sono strettamente legate al
 *Nota bene: Di default il pooling, in assenza del webhook, è schedulato da Argo CD ogni **3 minuti**.*
 
 ---
-<!-- SLIDE5 -->
+<!-- SLIDE6 -->
 <!-- header: '**CREDENZIALI DI ACCESSO**  $\color{#ffba3a}{|}$  _Argo CD e GitHub_' -->
 #
 ![bg](5.svg)
@@ -109,24 +114,32 @@ A seguito del salvataggio **argocd-server** genera una secret dal nome:
 - ***repo** + uuid*
 
 ---
-<!-- SLIDE6 -->
+<!-- SLIDE7 -->
 <!-- header: '**SALVAGUARDIA**  $\color{#ffba3a}{|}$  _Argo CD e GitHub_' -->
 # 
+Argo CD monitora e aggiorna le configurazioni di tutte le applicazioni che si trovano in uno specifico namespace definito nella fase di initialization.
 ![bg](6.svg)
 
 ---
-<!-- SLIDE7 -->
+<!-- SLIDE8 -->
+<!-- header: '**SALVAGUARDIA**  $\color{#ffba3a}{|}$  _Argo CD e GitHub_' -->
+# 
+L'applicazione di una qualsiasi modifica manuale sulle configurazioni, per lo specifo namespace monitorato da Argo CD, determina uno stato di inconsistenza.
+![bg](7.svg)
+
+---
+<!-- SLIDE9 -->
 <!-- header: '**SALVAGUARDIA**  $\color{#ffba3a}{|}$  _Argo CD e GitHub_' -->
 #
 ![bg](default/template.svg)
-Qualsiasi modifica manuale effettuata direttamente su K8s è rilevata da Argo CD e l'ipotetica divergenza creata tra lo **stato desiderato** e lo **stato attuale** viene colmata dallo stesso.
+L'ipotetica divergenza creata tra lo **stato desiderato** e lo **stato attuale** viene colmata da Argo CD.
 
 - La **divergenza** è gestita da Argo CD attraverso un riallineamento automatico o un'eventuale notifica di disallineamento.
 
 *NOTA BENE: L'unica fonte di verità è rappresentata dalla repository remota.*
 
 ---
-<!-- SLIDE8 -->
+<!-- SLIDE10 -->
 <!-- header: '**GESTIONE AMBIENTI MULTIPLI**  $\color{#ffba3a}{|}$  _Argo CD e GitHub_' -->
 # 
 ![bg](8.svg)
@@ -135,7 +148,7 @@ La gestione di ambienti multipli presenta le seguenti caratteristiche:
 - La sincronizzazione avviene a partire dalla stessa repository remota, ma i path definiti per Argo CD, afferiscono alle configurazioni di uno specifico ambiente.
 
 ---
-<!-- SLIDE9 -->
+<!-- SLIDE11 -->
 <!-- header: '**DESCRIZIONE**  $\color{#ffba3a}{|}$  _Kustomize_' -->
 # 
 ![bg](default/template.svg)
@@ -146,13 +159,13 @@ Kustomize è uno strumento, integrato in kubectl, che consente di personalizzare
 - Si integra perfettamente con Argo CD.
 
 ---
-<!-- SLIDE10 -->
+<!-- SLIDE12 -->
 <!-- header: '**Root**  $\color{#ffba3a}{|}$  _Argo CD + Kustomize_' -->
 # 
 ![bg](10.svg)
 
 ---
-<!-- SLIDE11 -->
+<!-- SLIDE13 -->
 <!-- header: '**CONFIGURAZIONI AMBIENTE**  $\color{#ffba3a}{|}$  _Argo CD + Kustomize_' -->
 # 
 ![bg](default/template.svg)
@@ -161,47 +174,43 @@ Argo CD presenta un path di configurazione per ogni ambiente, le cui specifiche 
 Il kustomization.yaml afferisce a delle configurazioni di base a cui viene applicato un override, così da personalizzare le configurazioni per lo specifico ambiente.
 
 ---
-<!-- SLIDE12 -->
-<!-- header: '**INFRASTRUTTURA**  $\color{#ffba3a}{|}$  _Argo CD + Kustomize_' -->
-# 
-![bg](12.svg)
-
-
----
-<!-- SLIDE13 -->
+<!-- SLIDE14 -->
 <!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Root_' -->
 #
 ![bg](default/template.svg)
 La repository è suddivisa in:
-  - ***application.yaml*** → configurazioni di lancio;
+#
   - **base** → template generale per gli applicativi presenti sul cluster;
   - **environments** → configurazioni per i diversi ambienti;
-  - **init** → configurazioni di setup environment per il cluster.
-
-Per quanto riguarda le folder di base e dell'environments, è possibile definire due scenari alternativi:
-- **Scenario 1** : Suddivisione logica basata sulle diverse tipologie di risorse kubernetes (cronjobs,services, deployments, ecc);
-- **Scenario 2** : Suddivisione logica basata sugli applicativi presenti all'interno del cluster K8s.
-
----
-<!-- SLIDE14 -->
-<!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Scenario 1_' -->
+  - **init** → configurazioni di setup environment per Argo CD.
 #
-![bg](default/template.svg)
-La folder di **base** è suddivisa nella seguente maniera:
-  - ***kustomizaziont.yaml*** → ha i riferimenti alle configurazioni di base
-  - services
-  - cronjobs
-  - deployments
-  - ...
-  - configmaps
-
-Ogni sottofolder, contiene gli yaml di configurazione. Ad esempio:
-  - *webserver.yaml*
-  - *cassa.yaml*
+Per quanto riguarda le folder di base e dell'environments vi è una suddivisione logica basata sugli applicativi presenti all'interno del cluster K8s.
 
 ---
 <!-- SLIDE15 -->
-<!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Scenario 1_' -->
+<!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Init_' -->
+#
+// Definire init
+
+---
+<!-- SLIDE15 -->
+<!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Base_' -->
+#
+![bg](default/template.svg)
+La folder di **base** presenta al suo interno:
+  - ***kustomizazion.yaml*** → ha i riferimenti alle configurazioni di base
+  - global
+  - cassette
+  - fatture-di-gruppo
+  - cassa
+  - ....
+
+Ogni sottofolder rappresenta un riferimento ad una applicazione presente sul cluster, quest'ultime contengono a loro volta ogni tipologia di risorsa K8s ad esse associate.
+
+---
+
+<!-- SLIDE16 -->
+<!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Environments_' -->
 #
 ![bg](default/template.svg)
 La folder di **environments** è suddivisa nella seguente maniera:
@@ -216,93 +225,28 @@ Ogni sottofolder fa riferimento ad un ambiente specifico.
 Ad esempio, path = environments/sviluppo.*
 
 ---
-<!-- SLIDE16 -->
-<!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Scenario 1_' -->
+<!-- SLIDE17 -->
+<!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Environment_' -->
 #
 ![bg](default/template.svg)
 Ogni **environment** presenta le seguenti configurazioni:
   - ***kustomization.yaml*** → Contiene un riferimento alla kustomization di base, alle patches , alle configmaps specifiche dell'ambiente, alle environment variables, alle immagini dei containers (questo permette di eseguire con facilità un rolling update).
-  - cronjobs
-  - services
-  - deployments
-  - ...
-  - globalconfigmaps
-
-Le risorse contengono internamente una folder per ogni applicazione e/o servizio presente sul cluster.
-
----
-<!-- SLIDE17 -->
-<!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Scenario 1_' -->
-#
-![bg](default/template.svg)
-Ad esempio per i deployments avremo:
-  - oracle
-  - webserver
+  - global
+  - cassette
+  - fatture-di-gruppo
   - cassa
-  - ...
+  - ....
 
-All'interno di ogni folder ci sono i riferimenti a delle specifiche relative ad ogni tipologia di risorsa, ad esempio per la risorsa deployments:
-  - ***replicas.yaml*** → numero di istanze;
-  - ***resources.yaml*** → risorse assegnate ad ogni pod;
-  - ***variables.yaml*** → variabili d'ambiente utilizzate dai singoli pod.
+Le folder delle app contengono a loro volta dei file yaml relativi ad ogni tipologia di risorsa associata al cluster per quella specifica app.
 
 ---
 <!-- SLIDE18 -->
-<!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Scenario 1_' -->
+<!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Kustomization_' -->
 #
 ![bg](default/template.svg)
-Di seguito il **kustomization.yaml** legato allo specifico ambiente:
+Il **kustomization.yaml** legato allo specifico ambiente, presenta le seguenti caratteristiche:
+- Riferimento alle configurazioni di base
 ```
 bases:
-    - ../../base
-patches:
-    - deployments/mysql/resources.yaml
-    - deployments/ngnix/replicas.yaml
-    - ...
-    - cronjobs/p13cronjob/resources.yaml
-    - cronjobs/p13cronjob/scheduling.yaml
-configMapGenerator:
-- name: example-config
-  namespace: myapp
-  files:
-  - globalconfigmaps/config.json
-patchesStrategicMerge:
-    - deployments/mysql/variables.yaml
-    - ...
-    - deployments/webserver/variables.yaml
-images:
-- name: webserver
-  newTag: 1.0.1
-- ...
-- name: p13
-  newTag: master-latest
+  - ../../base
 ```
----
-<!-- SLIDE19 -->
-<!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Scenario 2_' -->
-#
-![bg](default/template.svg)
-La folder di **base** presenta al suo interno:
-  - ***kustomizaziont.yaml*** 
-  - cassa
-  - oracle
-  - p13
-  - ...
-  - globalconfigmaps
-
-Ogni sottofolder rappresenta un riferimento ad una applicazione presente sul cluster, quest'ultime contengono a loro volta ogni tipologia di risorsa K8s ad esse associate.
-
----
-<!-- SLIDE20 -->
-<!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Scenario 2_' -->
-#
-![bg](default/template.svg)
-Ogni **environment** presenta le seguenti configurazioni:
-  - ***kustomization.yaml*** → Contiene un riferimento alla kustomization di base, alle patches , alle configmaps specifiche dell'ambiente, alle environment variables, alle immagini dei containers (questo permette di eseguire con facilità un rolling update).
-  - cassa
-  - oracle
-  - p13
-  - ...
-  - globalconfigmaps
-
-Le folder delle app contengono a loro volta dei file yaml relativi ad ogni tipologia di risorsa associata al cluster per quella specifica app.
