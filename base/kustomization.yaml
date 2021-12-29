@@ -7,3 +7,4 @@ resources:
     - cronjobs/p13cronjob.yaml
     - configmaps/config.yaml
     - configmaps/config-p13cronjob.yaml
+    - example-secret.yaml
