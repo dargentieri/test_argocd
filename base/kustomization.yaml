@@ -1,5 +1,5 @@
 resources:
-    - services/mysql.yaml
+    #- services/mysql.yaml
     - services/webserver.yaml
     - deployments/mysql.yaml
     - deployments/dnginx.yaml
