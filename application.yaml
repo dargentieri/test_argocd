@@ -8,9 +8,9 @@ spec:
   source:
     repoURL: https://github.com/dargentieri/test_argocd.git
     targetRevision: HEAD
-    path: environments/dev
-    #plugin:
-    #  name: argocd-vault-replacer
+    path: base
+    plugin:
+      name: argocd-vault-replacer
   destination:
     server: https://kubernetes.default.svc
     namespace: myapp
