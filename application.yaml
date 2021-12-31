@@ -11,19 +11,27 @@ spec:
     targetRevision: HEAD
     path: environments/dev
     #plugin:
-    #    name: argocd-vault-plugin
-    #    env:
-    #      - name: AVP_K8S_ROLE
-    #        value: vplugin
-    #      - name: AVP_TYPE
-    #        value: vault
-    #      - name: AVP_VAULT_ADDR
-    #        value: 'http://127.0.0.1:8200'
-    #      - name: AVP_AUTH_TYPE
-    #        value: k8s
+    #  name: argocd-vault-plugin
+    #  env:
+        #- name: AVP_K8S_ROLE
+        #  value: vplugin
+        #- name: AVP_TYPE
+        #  value: vault
+        #- name: AVP_VAULT_ADDR
+        #  value: 'http://10.1.15.197:8200'
+        #- name: AVP_AUTH_TYPE
+        #  value: k8s
+        #- name: VAULT_TOKEN
+        #  value: root
+        #- name: AVP_TYPE
+        #  value: vault
+        #- name: AVP_VAULT_ADDR
+        #  value: 'http://10.1.15.197:8200'
+        #- name: AVP_AUTH_TYPE
+        #  value: token
   destination:
     server: https://kubernetes.default.svc
-    namespace: vault-example
+    namespace: myapp
 
   syncPolicy:
     syncOptions:
