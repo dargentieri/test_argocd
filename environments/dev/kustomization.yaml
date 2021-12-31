@@ -5,11 +5,11 @@ patches:
     - deployments/ngnix/resources.yaml
     - cronjobs/p13cronjob/resources.yaml
     - cronjobs/p13cronjob/scheduling.yaml
-configMapGenerator:
-- name: example-config
-  namespace: myapp
-  files:
-  - globalconfigmaps/config.json
+#configMapGenerator:
+#- name: example-config
+#  namespace: myapp
+#  files:
+#  - globalconfigmaps/config.json
 patchesStrategicMerge:
     - deployments/ngnix/variables.yaml
     - deployments/webserver/variables.yaml

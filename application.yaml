@@ -5,30 +5,12 @@ metadata:
   namespace: argocd
 spec:
   project: default
-
   source:
     repoURL: https://github.com/dargentieri/test_argocd.git
     targetRevision: HEAD
     path: environments/dev
-    #plugin:
-    #  name: argocd-vault-plugin
-    #  env:
-        #- name: AVP_K8S_ROLE
-        #  value: vplugin
-        #- name: AVP_TYPE
-        #  value: vault
-        #- name: AVP_VAULT_ADDR
-        #  value: 'http://10.1.15.197:8200'
-        #- name: AVP_AUTH_TYPE
-        #  value: k8s
-        #- name: VAULT_TOKEN
-        #  value: root
-        #- name: AVP_TYPE
-        #  value: vault
-        #- name: AVP_VAULT_ADDR
-        #  value: 'http://10.1.15.197:8200'
-        #- name: AVP_AUTH_TYPE
-        #  value: token
+    plugin:
+      name: argocd-vault-replacer
   destination:
     server: https://kubernetes.default.svc
     namespace: myapp
@@ -40,4 +22,3 @@ spec:
     automated:
       selfHeal: true
       prune: true
-     
