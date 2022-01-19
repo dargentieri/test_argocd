@@ -13,7 +13,7 @@ Configuration:
   Loggers:
     logger:
       - name: it.allitude
-        level: INFO
+        level: TRACE
         additivity: false
         AppenderRef:
         - ref: StdoutTemplateJsonAppender
