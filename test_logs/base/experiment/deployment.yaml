@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: experiment
-        image: registry.servizi.allitude.it/experiment:1.0.6
+        image: domenicoallitude/experiment:1.0.6
         imagePullPolicy: IfNotPresent
         command: ["/bin/bash","-c","java -Dlogging.config=/app/log4j/log4j2-spring.yml -Xmx40960m -jar experiment-1.0.0-SNAPSHOT.jar /"]
         ports:
