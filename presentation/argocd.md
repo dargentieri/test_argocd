@@ -27,6 +27,7 @@ style: |
   header {color:#005366; padding:30px; margin-left:30px; font-size:0.8em;}
   pre {font-size: 0.6em; border: none;}
   ul li {font-size:0.7em; font-family:calibri; text-align:justify;}
+  ol li {font-size:0.7em; font-family:calibri; text-align:justify;}
 </style>
 <!--END style -->
 
@@ -68,7 +69,7 @@ metadata:
   name: myapp-argo-application
   namespace: argocd
 ```
-**source** → repository GitHub, con puntamento al commit e al relativo path dell'ambiente.
+- **source** → repository GitHub, con puntamento al commit e al relativo path dell'ambiente.
 ```yaml
   source:
     repoURL: https://github.com/dargentieri/test_argocd.git
@@ -169,7 +170,7 @@ Kustomize è uno strumento, integrato in kubectl, che consente di personalizzare
 <!-- header: '**CONFIGURAZIONI AMBIENTE**  $\color{#ffba3a}{|}$  _Argo CD + Kustomize_' -->
 # 
 ![bg](default/template.svg)
-Argo CD presenta un path di configurazione per ogni ambiente, le cui specifiche sono delineate a partire dal kustomization.yaml.
+Argo CD presenta un path di configurazione per ogni ambiente, le cui specifiche sono delineate a partire dal **kustomization.yaml**.
 
 Il kustomization.yaml afferisce a delle configurazioni di base a cui viene applicato un override, così da personalizzare le configurazioni per lo specifico ambiente.
 
@@ -182,15 +183,9 @@ La repository è suddivisa in:
 #
   - **base** → template generale per gli applicativi presenti sul cluster;
   - **environments** → configurazioni per i diversi ambienti;
-  - **init** → configurazioni di setup environment per Argo CD.
+  - **init** → configurazioni di setup target environment per Argo CD.
 #
 Per quanto riguarda le folder di base e dell'environments vi è una suddivisione logica basata sugli applicativi presenti all'interno del cluster K8s.
-
----
-<!-- SLIDE15 -->
-<!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Init_' -->
-#
-// Definire init
 
 ---
 <!-- SLIDE15 -->
@@ -244,9 +239,213 @@ Le folder delle app contengono a loro volta dei file yaml relativi ad ogni tipol
 <!-- header: '**LAYOUT DI BASE**  $\color{#ffba3a}{|}$  _Kustomization_' -->
 #
 ![bg](default/template.svg)
-Il **kustomization.yaml** legato allo specifico ambiente, presenta le seguenti caratteristiche:
-- Riferimento alle configurazioni di base
+Il **kustomization.yaml** dell'ambiente presenta le seguenti caratteristiche:
+```yaml
+#Riferimento alle configurazioni di base
+bases: 
+    - ../../base
+#Patches sugli applicativi di business
+patches: 
+    - cassa/replicas.yaml
+    - cassa/resources.yaml
+#Applicazione di specifiche configmap
+configMapGenerator: 
+- name: log4j-config
+  namespace: myapp
+  behavior: merge
+  files:
+  - cassa/log4j2-spring.yml
+#Injection delle variabili d'ambiente
+patchesStrategicMerge: 
+    - cassa/variables.yaml
+#Gestione del versionamento immagini
+images: 
+- name: cassa
+  newTag: latest
+- name: experiment
+  newTag: 1.0.6
 ```
-bases:
-  - ../../base
+---
+<!-- SLIDE19 -->
+<!-- header: '**GESTIONE SECRET**  $\color{#ffba3a}{|}$  _HashiCorp Vault_' -->
+#
+![bg](13.svg)
+#
+Per consentire pratiche GitOps più sicure, i dati sensibili non devono essere archiviati su GitHub e l'utilizzo di **Vault** come sistema di gestione dei secrets e della crittografia basato sull'identità, consente di ottenere una buona soluzione per la sicurezza, in quanto:
+- L'accesso ai secret è controllato da metodi di autenticazione e autorizzazione;
+- I dati sensibili sono archiviati e gestiti in modo sicuro, controllato e verificabile;
+
+
+---
+<!-- SLIDE20 -->
+<!-- header: '**GESTIONE SECRET**  $\color{#ffba3a}{|}$  _HashiCorp Vault_' -->
+#
+![bg](14.svg)
+#
+Quando un server Vault viene avviato, parte in uno stato **Seal**. 
+
+Vault è configurato per sapere dove e come accedere all'archiviazione fisica, ma non sa come decriptare. Per tale motivo, nella fase iniziale, viene effettuato l’**Unseal**, attraverso l'inserimento della chiave di decriptaggio.
+
+Il **processo di apertura** rappresenta il processo di ottenimento della chiave master. Quest'ultima permette di leggere la chiave di decrittografia, che consente a sua volta di decriptare i dati.
+
+---
+<!-- SLIDE21 -->
+<!-- header: '**GESTIONE SECRET**  $\color{#ffba3a}{|}$  _HashiCorp Vault_' -->
+#
+![bg](15.svg)
+#
+Vault utilizza un algoritmo noto come **la condivisione segreta di Shamir** per dividere la chiave in frammenti. 
+
+Per ricostruire la chiave di unseal è necessaria una certa soglia di partizioni (3 su 5), che viene quindi utilizzata per decrittografare la chiave master.
+
+Le partizioni vengono aggiunte una alla volta (in qualsiasi ordine) fino a quando non sono presenti abbastanza partizioni per ricostruire la chiave e decrittografare la chiave master.
+
+---
+<!-- SLIDE22 -->
+<!-- header: '**GESTIONE SECRET**  $\color{#ffba3a}{|}$  _HashiCorp Vault_' -->
+#
+![bg](16.svg)
+#
+L'autenticazione Kubernetes consente a Vault di instaurare una comunicazione con il cluster, che avviene tramite un **service account token** Kubernetes. Il token è assegnato a ciascun pod al momento della sua creazione. 
+
+Gli elementi necessari all'autenticazione sono:
+
+---
+<!-- SLIDE23 -->
+<!-- header: '**GESTIONE SECRET**  $\color{#ffba3a}{|}$  _HashiCorp Vault_' -->
+#
+![bg](default/template.svg)
+#
+**PATH** → Sono archiviati i dati di interesse.
+```sh
+vault kv put secret/vplugin/supersecret username="pmo" password="gopadres"
+
 ```
+La **POLICY** → Definisce la politica di accesso ai dati.
+```sh
+vault kv put secret/vplugin/supersecret username="pmo" password="gopadres"
+
+```
+Il **RUOLO** → Connette il service account Kubernetes e lo spazio dei nomi , con la policy definita precedentemente.
+```sh
+vault kv put secret/vplugin/supersecret username="pmo" password="gopadres"
+
+```
+---
+<!-- SLIDE24 -->
+<!-- header: '**GESTIONE SECRET**  $\color{#ffba3a}{|}$  _HashiCorp Vault_' -->
+#
+![bg](17.svg)
+#
+**Vault Agent Injector**  sfrutta il *mutating admission webhook* Kubernetes, per intercettare pod che presentano delle specifiche annotazioni, iniettando un contenitore *Vault Agent* per gestire i secret.
+
+---
+<!-- SLIDE25 -->
+<!-- header: '**GESTIONE SECRET**  $\color{#ffba3a}{|}$  _HashiCorp Vault_' -->
+#
+![bg](default/template.svg)
+#
+Di seguito un esempio di deployment  con delle annotation utili a Vault per effettuare l'injection delle credenziali di accesso al db oracle:
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cassa
+#...
+spec:
+#...
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/role: 'internal-app'
+        vault.hashicorp.com/agent-inject-secret-database-config.env: 'internal/data/database/config'
+        vault.hashicorp.com/agent-inject-template-database-config.env: |
+          {{- with secret "internal/data/database/config" -}}
+          #!/bin/bash
+          export user={{ .Data.data.username }}
+          {{- end -}}
+    spec:
+      serviceAccountName: internal-app
+      containers:
+        - name: orgchart
+          image: domenicoallitude/testenv
+          command: ['sh', '-c', 'source vault/secrets/database-config.env && java -jar cassa.jar']
+```
+---
+<!-- SLIDE26 -->
+<!-- header: '**GESTIONE SECRET**  $\color{#ffba3a}{|}$  _HashiCorp Vault_' -->
+#
+![bg](default/template.svg)
+#
+//Difficoltà nella gestione delle secret con questo approccio rispetto al plugin ArgoCD Vault Plugin.
+
+---
+<!-- SLIDE27 -->
+<!-- header: '**PLUGIN**  $\color{#ffba3a}{|}$  _ArgoCD Vault Plugin_' -->
+#
+![bg](18.svg)
+#
+Il plugin aiuta a risolvere il problema della gestione delle secrets con Vault e ArgoCD.
+
+---
+
+<!-- SLIDE28 -->
+<!-- header: '**PLUGIN**  $\color{#ffba3a}{|}$  _ArgoCD Vault Plugin_' -->
+#
+![bg](default/template.svg)
+#
+Di seguito gli step che illustrano la meccanica di utilizzo del plugin:
+1. Il platform team inizializza le secrets su specifici paths, definendo al contempo i nomi delle chiavi.
+2. L'ops team inizializza le secret utilizzando al posto dei dati sensibili i placeholder (<username> <password> ...) ovvero i nomi delle chiavi definite dal platform nello step precedente.
+3. Github a seguito del push sulla repository, da parte del team ops, invia una notifica di aggiornamento ad ArgoCD.
+4. ArgoCD Vault Plugin estrae il valore dell'ultima versione della secret (a meno di particolari eccezioni) ed effettua una value injection.
+5. Argo CD effettua l'apply della secret finale.
+---
+
+<!-- SLIDE29 -->
+<!-- header: '**PLUGIN**  $\color{#ffba3a}{|}$  _ArgoCD Vault Plugin_' -->
+#
+![bg](default/template.svg)
+#
+Esempio di una secret presente sulla repository GitHub:
+```yaml
+kind: Secret
+apiVersion: v1
+metadata:
+  name: example-secret
+  namespace: default
+  annotations:
+    avp.kubernetes.io/path: "secret/data/vplugin/supersecret"
+type: Opaque
+stringData:
+  username: <username>
+  password: <password>
+```
+---
+<!-- SLIDE30 -->
+<!-- header: '**PLUGIN**  $\color{#ffba3a}{|}$  _ArgoCD Vault Plugin_' -->
+#
+![bg](default/template.svg)
+#
+Esempio di una secret, post elaborazione da parte del plugin, presente sul cluster Kubernetes:
+```yaml
+kind: Secret
+apiVersion: v1
+metadata:
+  name: example-secret
+  namespace: default
+  annotations:
+    avp.kubernetes.io/path: "secret/data/vplugin/supersecret"
+type: Opaque
+stringData:
+  username: bXl1c2VybmFtZQo=
+  password: bXlwYXNzd29yZAo=
+```
+---
+<!-- END -->
+<!-- header: ''-->
+<!-- paginate:  -->
+#
+![bg](default/end.svg)
+
