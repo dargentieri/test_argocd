@@ -9,10 +9,9 @@ spec:
     repoURL: https://github.com/dargentieri/test_argocd.git
     targetRevision: HEAD
     path: test_logs/environments/sviluppo
-    plugin:
-      name: argocd-vault-plugin
   destination:
     server: https://kubernetes.default.svc
+    namespace: testdomenico
 
   syncPolicy:
     syncOptions:
