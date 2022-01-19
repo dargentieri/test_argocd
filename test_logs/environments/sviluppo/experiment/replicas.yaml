@@ -1,0 +1,9 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: experiment
+  namespace: testdomenico
+  labels:
+    app: experiment
+spec:
+  replicas: 2

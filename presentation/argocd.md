@@ -194,7 +194,7 @@ Per quanto riguarda le folder di base e dell'environments vi è una suddivisione
 ![bg](default/template.svg)
 La folder di **base** presenta al suo interno:
   - ***kustomizazion.yaml*** → ha i riferimenti alle configurazioni di base
-  - common → Contiene le configurazioni comune per tutti gli applicativi
+  - common → Contiene le configurazioni comuni per tutti gli applicativi
   - cassette
   - fatture-di-gruppo
   - cassa
@@ -226,7 +226,7 @@ Ad esempio, path = environments/sviluppo.*
 ![bg](default/template.svg)
 Ogni **environment** presenta le seguenti configurazioni:
   - ***kustomization.yaml*** → Contiene un riferimento alla kustomization di base, alle patches , alle configmaps specifiche dell'ambiente, alle environment variables, alle immagini dei containers (questo permette di eseguire con facilità un rolling update).
-  - common → Contiene le configurazioni comune per tutti gli applicativi
+  - common → Contiene le configurazioni comuni per tutti gli applicativi
   - cassette
   - fatture-di-gruppo
   - cassa

@@ -1,0 +1,5 @@
+resources:
+  - experiment/deployment.yaml
+  - experiment/service.yaml
+  - experiment/route.yaml
+  - experiment/configmap.yaml

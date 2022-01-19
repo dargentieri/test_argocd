@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: log4j-config-experiment
+  namespace: testdomenico
+data:
+  log4j2-spring.yml: |

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: experiment
+  namespace: testdomenico
+  labels:
+    app: experiment
+spec:
+  selector:
+    matchLabels:
+      app: experiment
+  template:
+    metadata:
+      labels:
+        app: experiment
+    spec:
+      containers:
+        - name: experiment
+          resources:
+            requests:
+              memory: "64Mi"

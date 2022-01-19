@@ -1,0 +1,14 @@
+bases:
+    - ../../base
+patches:
+    - experiment/resources.yaml
+    - experiment/replicas.yaml
+configMapGenerator:
+- name: log4j-config-experiment
+  namespace: testdomenico
+  behavior: merge
+  files:
+  - experiment/log4j2-spring.yml
+images:
+- name: experiment
+  newTag: 1.0.6

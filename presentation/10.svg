@@ -26,14 +26,14 @@
      showgrid="false"
      width="215mm"
      inkscape:zoom="0.76288195"
-     inkscape:cx="349.98862"
-     inkscape:cy="271.9949"
+     inkscape:cx="457.47576"
+     inkscape:cy="442.40134"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="1912"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g28120"
+     inkscape:current-layer="g1331"
      units="px"
      showguides="true"
      inkscape:guide-bbox="true">
@@ -442,7 +442,7 @@
                              id="tspan14998-8-9-6-0-7-3-8-3-4-8"
                              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Calibri;-inkscape-font-specification:Calibri;fill:#005366;fill-opacity:1;stroke-width:0.114905"
                              x="751.33612"
-                             y="-23.485607">global</tspan></text>
+                             y="-23.485607">common</tspan></text>
                         <text
                            xml:space="preserve"
                            style="font-style:normal;font-weight:normal;font-size:4.59616px;line-height:1.25;font-family:sans-serif;fill:#005366;fill-opacity:1;stroke:none;stroke-width:0.114905"
@@ -788,7 +788,7 @@
                            id="tspan14998-8-9-6-0-7-3-8-3-4-8-8-5-0-4"
                            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Calibri;-inkscape-font-specification:Calibri;fill:#005366;fill-opacity:1;stroke-width:0.114905"
                            x="802.04706"
-                           y="-18.423895">global</tspan></text>
+                           y="-18.423895">common</tspan></text>
                       <g
                          id="g18022-7"
                          transform="matrix(0.79042252,0,0,0.79042252,226.66762,-28.661256)">
@@ -882,7 +882,7 @@
                            id="tspan14998-8-9-6-0-7-3-8-3-4-8-8-5-0-4-3"
                            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Calibri;-inkscape-font-specification:Calibri;fill:#005366;fill-opacity:1;stroke-width:0.114905"
                            x="802.04706"
-                           y="5.70825">global</tspan></text>
+                           y="5.70825">common</tspan></text>
                       <g
                          id="g18022-7-1"
                          transform="matrix(0.79042252,0,0,0.79042252,226.66762,-4.4619445)">
@@ -1032,7 +1032,7 @@
                            id="tspan14998-8-9-6-0-7-3-8-3-4-8-8-5-0-4-3-7-9"
                            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Calibri;-inkscape-font-specification:Calibri;fill:#005366;fill-opacity:1;stroke-width:0.114905"
                            x="802.60425"
-                           y="31.278587">global</tspan></text>
+                           y="31.278587">common</tspan></text>
                       <g
                          id="g18022-7-1-0-6"
                          transform="matrix(0.79042252,0,0,0.79042252,227.22329,21.179546)">

@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: experiment
+  namespace: testdomenico
+  labels:
+    app: experiment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: experiment
+  template:
+    metadata:
+      labels:
+        app: experiment
+    spec:
+      containers:
+      - name: experiment
+        image: registry.servizi.allitude.it/experiment:1.0.6
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/bash","-c","java -Dlogging.config=/app/log4j/log4j2-spring.yml -Xmx40960m -jar experiment-1.0.0-SNAPSHOT.jar /"]
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: log4j-volume
+          mountPath: /app/log4j
+          readOnly: false
+      volumes:
+      - name: log4j-volume
+        configMap:
+          name: log4j-config-experiment

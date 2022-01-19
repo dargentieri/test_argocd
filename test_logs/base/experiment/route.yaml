@@ -1,0 +1,17 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    openshift.io/host.generated: "true"
+  creationTimestamp: "2021-10-28T07:17:33Z"
+  name: experiment
+  namespace: testdomenico
+spec:
+  host: experiment-testdomenico.apps.ocp-poc.collaudo.enet
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: experiment
+    weight: 100
+  wildcardPolicy: None
